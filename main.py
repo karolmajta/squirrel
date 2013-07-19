@@ -2,6 +2,8 @@ import pygame
 import sys
 import time
 
+from spacebar_controller import SpacebarController
+
 
 def init_game():
     window = pygame.display.set_mode((468, 60))
@@ -11,19 +13,22 @@ def init_game():
     return window, screen
 
 
-def shutdown_game(window):
-    sys.exit(0)
-
-
-def mainloop(screen):
-    # flip the display
-    pygame.display.flip()
+def mainloop(screen, started_at):
     # we need to transform all events from
-    # big todo
-    time.sleep(2)
+
+    sc = SpacebarController()
+
+    while(True):
+        current_time = time.time()
+        time_elapsed = 1000 * (current_time - started_at)
+        sc.tick(time_elapsed)
+
+        # flip the display
+        pygame.display.flip()
 
 
 if __name__ == "__main__":
     window, screen = init_game()
-    mainloop(screen)
-    shutdown_game(window)
+    start_time = time.time()
+    mainloop(screen, start_time)
+    sys.exit(0)
