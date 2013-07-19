@@ -8,7 +8,7 @@ def init_game():
     pygame.display.set_mode((640, 480))
     pygame.display.set_caption("Pirate Squirrel")
     screen = pygame.display.get_surface()
-    return (window, screen)
+    return window, screen
 
 
 def shutdown_game(window):
