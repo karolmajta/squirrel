@@ -2,6 +2,8 @@ import sys
 
 import pygame
 from pygame.locals import *
+from game_controller import GameController
+from intro_controller import IntroException
 
 LONGPRESS = USEREVENT+2
 SHORTPRESS = USEREVENT+3
@@ -25,11 +27,14 @@ class SpacebarController(object):
             elif event.type == KEYDOWN and event.key == 32:
                 self.handle_keydown(event, milis)
             elif event.type == LONGPRESS:
-                print 'CONTROLLER LONGPRESS'
                 self.controller.longpress()
             elif event.type == SHORTPRESS:
-                print 'CONTROLLER SHORTPRESS'
-                self.controller.shortpress()
+                try:
+                    self.controller.shortpress()
+                except IntroException, e:
+
+                    self.controller = GameController(screen=self.controller.screen)
+
             else:
                 continue
         return events
