@@ -18,7 +18,7 @@ def mainloop(screen, started_at):
 
     sc = SpacebarController()
 
-    while(True):
+    while (True):
         current_time = time.time()
         time_elapsed = 1000 * (current_time - started_at)
         sc.tick(time_elapsed)

@@ -6,10 +6,11 @@ from pygame.locals import *
 
 class SpacebarController(object):
 
-    def __init__(self, longpress_min_milis=500, shortpress_max_milis=200):
+    def __init__(self, longpress_min_milis=500, shortpress_max_milis=200, controller=None):
         self.longpress_min_milis = longpress_min_milis
         self.shortpress_max_milis = shortpress_max_milis
         self.push_started_at = None
+        self.controller = controller
 
     def tick(self, milis):
         events = pygame.event.get()
