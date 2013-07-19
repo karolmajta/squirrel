@@ -1,6 +1,7 @@
 import pygame
 import sys
 import time
+from intro_controller import IntroController
 
 from spacebar_controller import SpacebarController
 
@@ -15,8 +16,8 @@ def init_game():
 
 def mainloop(screen, started_at):
     # we need to transform all events from
-
-    sc = SpacebarController()
+    intro = IntroController(screen)
+    sc = SpacebarController(controller=intro)
 
     while (True):
         current_time = time.time()

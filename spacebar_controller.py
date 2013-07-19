@@ -3,14 +3,17 @@ import sys
 import pygame
 from pygame.locals import *
 
+LONGPRESS = USEREVENT+2
+SHORTPRESS = USEREVENT+3
 
 class SpacebarController(object):
 
-    def __init__(self, longpress_min_milis=500, shortpress_max_milis=200, controller=None):
+    def __init__(self, longpress_min_milis=500, shortpress_max_milis=200, screen=None, controller=None):
         self.longpress_min_milis = longpress_min_milis
         self.shortpress_max_milis = shortpress_max_milis
         self.push_started_at = None
         self.controller = controller
+        self.screen = screen
 
     def tick(self, milis):
         events = pygame.event.get()
@@ -21,6 +24,12 @@ class SpacebarController(object):
                 self.handle_keyup(event, milis)
             elif event.type == KEYDOWN and event.key == 32:
                 self.handle_keydown(event, milis)
+            elif event.type == LONGPRESS:
+                print 'CONTROLLER LONGPRESS'
+                self.controller.longpress()
+            elif event.type == SHORTPRESS:
+                print 'CONTROLLER SHORTPRESS'
+                self.controller.shortpress()
             else:
                 continue
         return events
@@ -30,10 +39,15 @@ class SpacebarController(object):
             return
         else:
             if milis - self.push_started_at > self.longpress_min_milis:
+                deadevent = pygame.event.Event(LONGPRESS)
+                pygame.event.post(deadevent)
                 print "longpress"
             elif milis - self.push_started_at < self.shortpress_max_milis:
+                deadevent = pygame.event.Event(SHORTPRESS)
+                pygame.event.post(deadevent)
                 print "shortpress"
             else:
+                # Just pass and don't do anything
                 print "press ignored"
             self.push_started_at = None
 
