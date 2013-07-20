@@ -1,39 +1,29 @@
 import pygame
-from abstract_controller import AbstractController
-from block import Block
-from cannon import Cannon
-from colors import WHITE
-from settings import STARTSTATE, INGAMESTATE
 
 
-class GameController(AbstractController):
-    def __init__(self, screen=None):
+DEFAULT_BLIT_COLOR = pygame.Color(0, 0, 0, 255)
+
+
+class ControllerResignException(Exception):
+    pass
+
+
+class GameController(object):
+
+    def __init__(self, screen):
         self.screen = screen
-        self.state = STARTSTATE
 
-        cannon = Cannon()
-        cannon.state = self.state
+    def resign(self):
+        raise ControllerResignException()
 
-        block = Block()
-        block.state = self.state
-
-        self.screen.fill(WHITE)
-        self.allsprites = pygame.sprite.RenderPlain((cannon,block))
-        self.allsprites.draw(self.screen)
-
-    def update(self):
-        if self.state == STARTSTATE:
-            self.screen.fill(WHITE)
-            self.allsprites.update()
-
-            self.allsprites.draw(self.screen)
-            pygame.display.flip()
-
+    def update(self, milis):
+        pass
 
     def longpress(self):
-        print 'gamelong'
+        pass
 
     def shortpress(self):
-        self.state = INGAMESTATE
-        #self.update()
         pass
+
+    def draw(self):
+        self.screen.fill(DEFAULT_BLIT_COLOR)

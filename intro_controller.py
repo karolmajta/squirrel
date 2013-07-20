@@ -1,48 +1,58 @@
 import os
 import pygame
-from abstract_controller import AbstractController
-from colors import WHITE
-from settings import RESOLUTION
+
+from game_controller import GameController
+from settings import ASSETS_PATH
 
 
-class IntroException(Exception):
-    pass
+STATE_FADEIN = 0
+STATE_DISPLAYIMAGE = 1
+STATE_FADEOUT = 2
+
+IMAGES = [
+    ('logo.png', (50, 200)),
+    ('1_intro.png', (0, 0)),
+    ('2_intro.png', (0, 0)),
+    ('3_intro.png', (0, 0))
+]
 
 
-class IntroController(AbstractController):
+class IntroController(GameController):
 
-    def __init__(self, screen):
-        self.intro_images = ['1_intro.png', '2_intro.png', '3_intro.png', ]
-        self.actual = 0
-        self.screen = screen
+    def __init__(self, screen, fade=0.1):
+        super(IntroController, self).__init__(screen)
+        self.state = STATE_FADEIN
+        self.opacity = 255
+        self.images = map(lambda i: self.load_image(i), IMAGES)
+        self.current_image = self.images[0]
+        try:
+            self.next_image = self.images[1]
+        except IndexError:
+            self.next_image = None
 
-        screen.fill(WHITE)
-        self.draw_image("logo.png", (50, 200), False)
+    def load_image(self, fn):
+        pth = os.path.join(ASSETS_PATH, fn[0])
+        img = pygame.image.load(pth)
+        return (img, fn[1])
 
     def shortpress(self):
-        img_file = self.next()
-        self.draw_image(img_file)
+        self.forward()
 
     def longpress(self):
-        imgfile = self.get_last()
-        self.draw_image(imgfile)
+        self.fast_forward()
 
-    def draw_image(self, img_filename, position=(0, 0), scale=True):
-        img_file = pygame.image.load(os.path.join(self.assets_dir, img_filename))
-        if scale:
-            img_file = pygame.transform.scale(img_file, RESOLUTION)
-        self.screen.blit(img_file, position)
+    def forward(self):
+        self.state = STATE_FADEOUT
 
-    def next(self):
-        if self.actual != 3:
-            img = self.intro_images[self.actual]
-            self.actual += 1
-            return img
-        else:
-            raise IntroException()
+    def fast_forward(self):
+        self.state = STATE_FADEOUT
 
-    def get_last(self):
-        img = self.intro_images[2]
-        self.actual = 3
-        return img
-
+    def draw(self):
+        super(IntroController, self).draw()
+        self.screen.blit(self.current_image[0], self.current_image[1])
+        if self.state == STATE_FADEIN:
+            pass
+        if self.state == STATE_DISPLAYIMAGE:
+            pass
+        if self.state == STATE_FADEOUT:
+            pass
