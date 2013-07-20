@@ -6,6 +6,7 @@ from settings import RESOLUTION
 
 from spacebar_controller import SpacebarController, LONGPRESS, SHORTPRESS
 from game_controller import ControllerResignException
+from gameplay_controller import GameplayController
 
 
 class GameControllerManager(object):
@@ -40,7 +41,8 @@ def mainloop(screen, started_at):
     sc = SpacebarController()
 
     game_controllers = [
-        (IntroController, (screen,)),
+    #    (IntroController, (screen,)),
+        (GameplayController, (screen,))
     ]
     cm = GameControllerManager(game_controllers)
 
@@ -58,6 +60,7 @@ def mainloop(screen, started_at):
             cm.active_controller.draw()
         except ControllerResignException:
             cm.next_controller()
+            pygame.display.flip()
             cm.active_controller.draw()
         pygame.display.flip()
 
