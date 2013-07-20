@@ -26,6 +26,8 @@ class SpacebarController(object):
                 self.handle_keyup(event, milis)
             elif event.type == KEYDOWN and event.key == 32:
                 self.handle_keydown(event, milis)
+            elif event.type == KEYDOWN and event.key == 114:
+                self.controller = GameController(screen=self.controller.screen)
             elif event.type == LONGPRESS:
                 self.controller.longpress()
             elif event.type == SHORTPRESS:
@@ -35,8 +37,8 @@ class SpacebarController(object):
                     self.controller = GameController(screen=self.controller.screen)
             else:
                 continue
-        #if isinstance(self.controller, GameController):
-        #    self.controller.update()
+        if isinstance(self.controller, GameController):
+            self.controller.update()
 
         return events
 

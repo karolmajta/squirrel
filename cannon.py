@@ -1,31 +1,44 @@
 import os
 import pygame
-from image import ImageObject
+from helpers import load_image
+from settings import STARTSTATE
 
 
-class Cannon(ImageObject):
+class Cannon(pygame.sprite.Sprite):
 
-    position = (100, 200)
-    size = (40, 200)
-    img_filename = 'rocket.png'
-    angle = 90
-    param = -10
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image, self.rect = load_image('rocket.png')
+        screen = pygame.display.get_surface()
+        self.area = screen.get_rect()
+        self.rect.topleft = 40, 310
+        self.move = 9
+        self.angle = -90
+        self.dir = -5
+        self.original = self.image
 
-    def rotate_canon(self):
-        oldCenter = self.rect.center
-        #rotate surf by DEGREE amount degrees
-        self.img_file = pygame.transform.rotate(self.img_file, self.param)
+    def update(self):
+        "walk or spin, depending on the monkeys state"
+        if self.state == STARTSTATE:
+            self._spin()
 
-        #get the rect of the rotated surf and set it's center to the oldCenter
-        self.rect = self.img_file.get_rect()
-        self.rect.center = oldCenter
 
-        self.angle += self.param
-        print "angle : %s" %self.angle
-        print "param : %s" %self.param
+    def _spin(self):
+        "spin the monkey image"
+        center = self.rect.center
+        self.angle = self.angle + self.dir
+        if self.angle >= 360:
+            self.angle = 0
+            self.image = self.original
+        else:
+            rotate = pygame.transform.rotate
+            self.image = rotate(self.original, self.angle)
 
-        if self.angle >= 90:
-            self.param = -10
-        elif self.angle <= 0:
-            self.param = 10
+        if self.angle <= -90:
+            self.dir = 5
+        elif self.angle >=0:
+            self.dir = -5
+
+        self.rect = self.image.get_rect(center=center)
+
 

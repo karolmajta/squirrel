@@ -1,35 +1,39 @@
-import os
 import pygame
 from abstract_controller import AbstractController
+from block import Block
 from cannon import Cannon
 from colors import WHITE
-from settings import RESOLUTION
-
-STARTSTATE = 0
-INGAMESTATE = 1
-ENDGAME = 2
+from settings import STARTSTATE, INGAMESTATE
 
 
 class GameController(AbstractController):
     def __init__(self, screen=None):
         self.screen = screen
         self.state = STARTSTATE
-        self.cannon = Cannon()
-        self.screen.fill(WHITE)
 
-        self.draw_image(self.cannon, (100, 200), True)
+        cannon = Cannon()
+        cannon.state = self.state
+
+        block = Block()
+        block.state = self.state
+
+        self.screen.fill(WHITE)
+        self.allsprites = pygame.sprite.RenderPlain((cannon,block))
+        self.allsprites.draw(self.screen)
 
     def update(self):
-        self.cannon.rotate_canon()
-        self.screen.fill(WHITE)
-        self.draw_image(self.cannon, self.cannon.position)
+        if self.state == STARTSTATE:
+            self.screen.fill(WHITE)
+            self.allsprites.update()
+
+            self.allsprites.draw(self.screen)
+            pygame.display.flip()
+
 
     def longpress(self):
         print 'gamelong'
 
     def shortpress(self):
-        self.update()
-
-    def draw_image(self, obj, position=(0, 0), first= False):
-        import ipdb; ipdb.set_trace()
-        self.screen.blit(obj.img_file, position).center
+        self.state = INGAMESTATE
+        #self.update()
+        pass
