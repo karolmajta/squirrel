@@ -42,7 +42,7 @@ def mainloop(screen, started_at):
 
     game_controllers = [
  #       (IntroController, (screen,)),
-        (GameplayController, (screen,)),
+ #       (GameplayController, (screen,)),
         (OutroController, (screen,)),
     ]
     cm = GameControllerManager(game_controllers)
