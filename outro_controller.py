@@ -10,12 +10,11 @@ BACKGROUND_IMAGE = ''
 BOLD = 0
 ITALIC = 1
 
-
 TEXT = [
-    ("Squirrel Pirate", [200, 550], 42, [BOLD, ITALIC]),    # position will be changing over time
-    ("Credits", [200, 600], 15, [BOLD]),            # position will be changing over time
-    ("next text", [200, 650], 15, [ITALIC]),          # position will be changing over time
-    ("and last text", [200, 700], 15, [ITALIC]),      # position will be changing over time
+    ("Squirrel Pirate", [200, 550], 42, [BOLD, ITALIC]), # position will be changing over time
+    ("Credits", [200, 600], 15, [BOLD]), # position will be changing over time
+    ("next text", [200, 650], 15, [ITALIC]), # position will be changing over time
+    ("and last text", [200, 700], 15, [ITALIC]), # position will be changing over time
 
 ]
 
@@ -59,7 +58,6 @@ class OutroController(GameController):
 
     def draw(self):
         super(OutroController, self).draw()
-        if self.state == SCROLLING:
-            self.screen.fill(WHITE)
-            for text in self.text_list:
-                self.screen.blit(text[0], text[1])
+        self.screen.fill(WHITE)
+        for text in self.text_list:
+            self.screen.blit(text[0], text[1])
