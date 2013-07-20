@@ -2,13 +2,12 @@ import pygame
 import sys
 import time
 from intro_controller import IntroController
-from outro_controller import OutroController
 from settings import RESOLUTION
 
 from spacebar_controller import SpacebarController, LONGPRESS, SHORTPRESS
 from game_controller import ControllerResignException
 from gameplay_controller import GameplayController
-
+from outro_controller import OutroController
 
 class GameControllerManager(object):
 
@@ -42,8 +41,9 @@ def mainloop(screen, started_at):
     sc = SpacebarController()
 
     game_controllers = [
-    #    (IntroController, (screen,)),
-        (GameplayController, (screen,))
+ #       (IntroController, (screen,)),
+        (GameplayController, (screen,)),
+        (OutroController, (screen,)),
     ]
     cm = GameControllerManager(game_controllers)
 
