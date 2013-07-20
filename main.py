@@ -20,8 +20,9 @@ def mainloop(screen, started_at):
 
     intro = IntroController(screen)
     sc = SpacebarController(controller=intro)
-
+    clock = pygame.time.Clock()
     while True:
+        clock.tick(50)
         current_time = time.time()
         time_elapsed = 1000 * (current_time - started_at)
         sc.tick(time_elapsed)

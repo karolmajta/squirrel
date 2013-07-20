@@ -10,12 +10,12 @@ class IntroException(Exception):
 
 
 class IntroController(AbstractController):
-    assets_dir = 'assets'
 
     def __init__(self, screen):
-        self.intro_images = ['1_intro.png', '2_intro.jpg', '3_intro.jpg', ]
+        self.intro_images = ['1_intro.png', '2_intro.png', '3_intro.png', ]
         self.actual = 0
         self.screen = screen
+
         screen.fill(WHITE)
         self.draw_image("logo.png", (50, 200), False)
 

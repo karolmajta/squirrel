@@ -5,11 +5,11 @@ from pygame.locals import *
 from game_controller import GameController
 from intro_controller import IntroException
 
-LONGPRESS = USEREVENT+2
-SHORTPRESS = USEREVENT+3
+LONGPRESS = USEREVENT + 2
+SHORTPRESS = USEREVENT + 3
+
 
 class SpacebarController(object):
-
     def __init__(self, longpress_min_milis=500, shortpress_max_milis=200, screen=None, controller=None):
         self.longpress_min_milis = longpress_min_milis
         self.shortpress_max_milis = shortpress_max_milis
@@ -32,11 +32,12 @@ class SpacebarController(object):
                 try:
                     self.controller.shortpress()
                 except IntroException, e:
-
                     self.controller = GameController(screen=self.controller.screen)
-
             else:
                 continue
+        #if isinstance(self.controller, GameController):
+        #    self.controller.update()
+
         return events
 
     def handle_keyup(self, ev, milis):
