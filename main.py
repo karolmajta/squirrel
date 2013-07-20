@@ -3,19 +3,28 @@ import sys
 import time
 from intro_controller import IntroController
 from settings import RESOLUTION
-from collections import OrderedDict
 
 from spacebar_controller import SpacebarController, LONGPRESS, SHORTPRESS
+from game_controller import ControllerResignException
 
 
 class GameControllerManager(object):
 
     def __init__(self, controllers):
         self.controllers = controllers
-        self.active_controller = controllers.values()[0]
+        args = controllers[0][1]
+        constructor = controllers[0][0]
+        self.active_controller = constructor(*args)
+        self.active_controller_index = 0
 
-    def activate(self, name):
-        self.active_controller = self.controllers[name]
+    def next_controller(self):
+        if self.active_controller_index < len(self.controllers) - 1:
+            self.active_controller_index += 1
+        else:
+            self.active_controller_index = 0
+        args = self.controllers[self.active_controller_index][1]
+        constructor = self.controllers[self.active_controller_index][0]
+        self.active_controller = constructor(*args)
 
 
 def init_game():
@@ -30,28 +39,27 @@ def mainloop(screen, started_at):
 
     sc = SpacebarController()
 
-    game_controllers = OrderedDict({
-        "intro": IntroController(screen),
-    })
+    game_controllers = [
+        (IntroController, (screen,)),
+    ]
     cm = GameControllerManager(game_controllers)
 
     while True:
         current_time = time.time()
         time_elapsed = 1000 * (current_time - started_at)
         event = sc.tick(time_elapsed)
-        if event: print event
 
         if event == LONGPRESS:
             cm.active_controller.longpress()
         elif event == SHORTPRESS:
             cm.active_controller.shortpress()
-
-        cm.active_controller.update(time_elapsed)
-
-        # flip the display
+        try:
+            cm.active_controller.update(time_elapsed)
+            cm.active_controller.draw()
+        except ControllerResignException:
+            cm.next_controller()
+            cm.active_controller.draw()
         pygame.display.flip()
-
-        cm.active_controller.draw()
 
 
 if __name__ == "__main__":
