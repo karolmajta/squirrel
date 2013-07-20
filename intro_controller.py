@@ -9,12 +9,12 @@ STATE_DISPLAYIMAGE = 1
 STATE_FADEOUT = 2
 
 IMAGES = [
-    ('logo.png', (50, 200)),
-    ('1_intro.png', (0, 0)),
-    ('2_intro.png', (0, 0)),
-    ('3_intro.png', (0, 0))
+    ('logo.png', (50, 200), False),
+    ('1_intro.png', (0, 0), True),
+    ('2_intro.png', (0, 0), True),
+    ('3_intro.png', (0, 0), True)
 ]
-
+# (filename, position, scale)
 
 class IntroController(GameController):
 
@@ -35,6 +35,8 @@ class IntroController(GameController):
     def load_image(self, fn):
         pth = os.path.join(ASSETS_PATH, fn[0])
         img = pygame.image.load(pth)
+        if fn[2]:
+            img = pygame.transform.scale(img, RESOLUTION)
         return (img, fn[1])
 
     def shortpress(self):
