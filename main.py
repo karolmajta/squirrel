@@ -2,6 +2,7 @@ import pygame
 import sys
 import time
 from intro_controller import IntroController
+from outro_controller import OutroController
 from settings import RESOLUTION
 from collections import OrderedDict
 
@@ -31,7 +32,7 @@ def mainloop(screen, started_at):
     sc = SpacebarController()
 
     game_controllers = OrderedDict({
-        "intro": IntroController(screen),
+        "intro": OutroController(screen),
     })
     cm = GameControllerManager(game_controllers)
 
