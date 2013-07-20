@@ -2,6 +2,7 @@ import pygame
 import sys
 import time
 from intro_controller import IntroController
+from outro_controller import OutroController
 from settings import RESOLUTION
 
 from spacebar_controller import SpacebarController, LONGPRESS, SHORTPRESS
